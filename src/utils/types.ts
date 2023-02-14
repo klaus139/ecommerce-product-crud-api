@@ -6,5 +6,24 @@ export interface Iproduct {
     unit: number,
     price: number,
     available: boolean,
-    supplier: string
+    supplier: string,
 }
+
+// export type PaginatedData<T> = {
+//     data: T[];
+//     currentPage: number;
+//     nextPage: number | null;
+//     previousPage: number | null;
+//     totalPages: number;
+//   }
+  
+
+export type PaginatedData<T> = {
+    data: T[];
+    currentPage: number;
+    nextPage: number | null;
+    previousPage: number | null;
+    totalPages: number;
+    total: number; // new property
+  }
+  

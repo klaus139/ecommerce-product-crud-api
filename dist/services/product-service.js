@@ -20,12 +20,36 @@ class ProductService {
             throw new app_errors_1.APIError('API Error', app_errors_1.STATUS_CODES.INTERNAL_ERROR, 'Data not found', true, '', true);
         }
     }
-    async GetProducts() {
+    // async GetProducts(){
+    //     try{
+    //         const products = await this.repository.Products();
+    //         return FormateData({
+    //             products
+    //         })
+    //     }catch(err){
+    //         throw new APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Data not found', true, '', true)
+    //     }
+    // }
+    async GetProducts(page, pageSize) {
         try {
-            const products = await this.repository.Products();
-            return (0, utils_1.FormateData)({
-                products
-            });
+            const offset = (page - 1) * pageSize;
+            const limit = pageSize;
+            const products = await this.repository.Products(offset, limit);
+            const totalProducts = await this.repository.TotalProducts();
+            const totalPages = Math.ceil(totalProducts / pageSize);
+            const currentPage = page;
+            const nextPage = currentPage < totalPages ? currentPage + 1 : null;
+            const previousPage = currentPage > 1 ? currentPage - 1 : null;
+            const total = totalProducts;
+            const paginatedData = {
+                data: (0, utils_1.FormateData)({ products }),
+                currentPage,
+                nextPage,
+                previousPage,
+                totalPages,
+                total
+            };
+            return paginatedData;
         }
         catch (err) {
             throw new app_errors_1.APIError('API Error', app_errors_1.STATUS_CODES.INTERNAL_ERROR, 'Data not found', true, '', true);

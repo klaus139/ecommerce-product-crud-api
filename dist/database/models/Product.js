@@ -30,8 +30,8 @@ const ProductSchema = new mongoose_1.Schema({
     desc: String,
     banner: String,
     type: String,
-    unit: String,
-    price: String,
+    unit: Number,
+    price: Number,
     available: Boolean,
     supplier: String
 });

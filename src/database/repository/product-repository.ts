@@ -20,13 +20,32 @@ export class ProductRepository {
         }
     }
 
-    async Products(){
-        try{
-            return await ProductModel.find();
-        }catch(err){
-            throw new APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Unable to Get Product', true, '', true)
+    // async Products(){
+    //     try{
+    //         return await ProductModel.find();
+    //     }catch(err){
+    //         throw new APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Unable to Get Product', true, '', true)
+    //     }
+    // }
+
+    async Products(offset: number, limit: number) {
+        try {
+          return await ProductModel.find().skip(offset).limit(limit);
+        } catch (err) {
+          throw new APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Unable to Get Product', true, '', true);
         }
-    }
+      }
+      
+
+    async TotalProducts() {
+        try {
+          const count = await ProductModel.countDocuments();
+          return count;
+        } catch (err) {
+          throw new APIError('API Error', STATUS_CODES.INTERNAL_ERROR, 'Unable to Get Total Products', true, '', true)
+        }
+      }
+      
 
     async FindById(id:string){
         try{
